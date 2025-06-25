@@ -1,0 +1,270 @@
+2025-06-25 10:32:25 | INFO     | __main__:<module>:219 - 🎯 Lancement du serveur sur 0.0.0.0:8000
+2025-06-25 10:32:25 | INFO     | main:lifespan:43 - 🚀 Démarrage de Sentiment AI Platform
+2025-06-25 10:32:25 | INFO     | main:lifespan:53 - ✓ PyTorch 2.5.0+cpu - CUDA: False
+2025-06-25 10:32:25 | INFO     | main:lifespan:56 - ✓ NLTK disponible
+2025-06-25 10:32:25 | INFO     | main:lifespan:59 - ✓ spaCy disponible
+2025-06-25 10:32:25 | INFO     | main:lifespan:62 - ✓ Détection de langue disponible
+2025-06-25 10:32:25 | INFO     | main:lifespan:68 - ✅ Toutes les dépendances sont prêtes
+2025-06-25 10:33:18 | INFO     | main:log_requests:134 - GET / - Status: 200 - Time: 0.000s
+2025-06-25 10:33:18 | INFO     | main:log_requests:134 - GET /favicon.ico - Status: 404 - Time: 0.000s
+2025-06-25 10:33:29 | INFO     | main:log_requests:134 - GET /docs - Status: 200 - Time: 0.000s
+2025-06-25 10:33:30 | INFO     | main:log_requests:134 - GET /openapi.json - Status: 200 - Time: 0.131s
+2025-06-25 10:39:13 | INFO     | main:log_requests:134 - GET /api/v1/health - Status: 200 - Time: 0.000s
+2025-06-25 10:41:12 | ERROR    | app.api.routes:validate_training_data:158 - Erreur validation données test-client: 5 validation errors for DataValidationResult
+sentiment_distribution.2.[key]
+  Input should be a valid string [type=string_type, input_value=2, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+sentiment_distribution.-2.[key]
+  Input should be a valid string [type=string_type, input_value=-2, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+sentiment_distribution.0.[key]
+  Input should be a valid string [type=string_type, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+sentiment_distribution.1.[key]
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+sentiment_distribution.-1.[key]
+  Input should be a valid string [type=string_type, input_value=-1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+2025-06-25 10:41:12 | ERROR    | main:general_exception_handler:156 - Erreur non gérée: 1 validation error for ErrorResponse
+timestamp
+  Input should be a valid string [type=string_type, input_value=1750840872.703229, input_type=float]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+2025-06-25 10:44:26 | INFO     | main:log_requests:134 - POST /api/v1/clients/test-client/train - Status: 422 - Time: 0.000s
+2025-06-25 10:46:53 | INFO     | main:log_requests:134 - POST /api/v1/clients/test-client/train - Status: 422 - Time: 0.002s
+2025-06-25 10:48:52 | INFO     | main:log_requests:134 - POST /api/v1/clients/test-client/train - Status: 422 - Time: 0.000s
+2025-06-25 10:50:49 | ERROR    | app.api.routes:start_training:230 - Erreur lancement entraînement test-client: 5 validation errors for DataValidationResult
+sentiment_distribution.2.[key]
+  Input should be a valid string [type=string_type, input_value=2, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+sentiment_distribution.1.[key]
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+sentiment_distribution.0.[key]
+  Input should be a valid string [type=string_type, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+sentiment_distribution.-1.[key]
+  Input should be a valid string [type=string_type, input_value=-1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+sentiment_distribution.-2.[key]
+  Input should be a valid string [type=string_type, input_value=-2, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+2025-06-25 10:50:49 | ERROR    | main:general_exception_handler:156 - Erreur non gérée: 1 validation error for ErrorResponse
+timestamp
+  Input should be a valid string [type=string_type, input_value=1750841449.2796347, input_type=float]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+2025-06-25 10:53:43 | INFO     | main:lifespan:73 - 🛑 Arrêt de Sentiment AI Platform
+2025-06-25 10:58:50 | INFO     | __main__:<module>:220 - 🎯 Lancement du serveur sur 0.0.0.0:8000
+2025-06-25 10:58:50 | INFO     | main:lifespan:44 - 🚀 Démarrage de Sentiment AI Platform
+2025-06-25 10:58:50 | INFO     | main:lifespan:54 - ✓ PyTorch 2.5.0+cpu - CUDA: False
+2025-06-25 10:58:50 | INFO     | main:lifespan:57 - ✓ NLTK disponible
+2025-06-25 10:58:50 | INFO     | main:lifespan:60 - ✓ spaCy disponible
+2025-06-25 10:58:50 | INFO     | main:lifespan:63 - ✓ Détection de langue disponible
+2025-06-25 10:58:50 | INFO     | main:lifespan:69 - ✅ Toutes les dépendances sont prêtes
+2025-06-25 10:59:12 | INFO     | main:log_requests:135 - GET /docs - Status: 200 - Time: 0.000s
+2025-06-25 10:59:12 | INFO     | main:log_requests:135 - GET /openapi.json - Status: 200 - Time: 0.115s
+2025-06-25 10:59:34 | INFO     | app.api.routes:start_training:219 - Entraînement lancé pour client test-client
+2025-06-25 10:59:34 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/train - Status: 200 - Time: 0.002s
+2025-06-25 10:59:34 | INFO     | app.services.trainer:__init__:147 - Trainer initialisé pour client test-client sur cpu
+2025-06-25 10:59:34 | INFO     | app.services.trainer:train:358 - Début de l'entraînement pour test-client
+2025-06-25 10:59:34 | INFO     | app.services.trainer:prepare_data:159 - Préparation des données: 25 échantillons
+2025-06-25 10:59:40 | INFO     | app.services.trainer:prepare_data:191 - Données préparées: 20 train, 5 val
+2025-06-25 10:59:40 | INFO     | app.services.trainer:build_model:204 - Construction du modèle lstm
+2025-06-25 10:59:40 | INFO     | app.services.trainer:build_model:217 - Modèle créé avec 277,381 paramètres entraînables
+2025-06-25 10:59:47 | INFO     | app.services.trainer:setup_training:246 - Configuration d'entraînement terminée
+2025-06-25 10:59:55 | ERROR    | app.services.trainer:train:423 - Erreur pendant l'entraînement: Target -2 is out of bounds.
+2025-06-25 10:59:55 | ERROR    | app.api.routes:run_training_background:265 - Erreur entraînement background test-client: Target -2 is out of bounds.
+2025-06-25 11:01:13 | INFO     | main:log_requests:135 - GET /api/v1/clients/test-client/training-status - Status: 200 - Time: 0.000s
+2025-06-25 11:01:47 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 404 - Time: 0.006s
+2025-06-25 11:04:20 | INFO     | main:lifespan:74 - 🛑 Arrêt de Sentiment AI Platform
+2025-06-25 11:04:26 | INFO     | __main__:<module>:220 - 🎯 Lancement du serveur sur 0.0.0.0:8000
+2025-06-25 11:04:26 | INFO     | main:lifespan:44 - 🚀 Démarrage de Sentiment AI Platform
+2025-06-25 11:04:26 | INFO     | main:lifespan:54 - ✓ PyTorch 2.5.0+cpu - CUDA: False
+2025-06-25 11:04:26 | INFO     | main:lifespan:57 - ✓ NLTK disponible
+2025-06-25 11:04:26 | INFO     | main:lifespan:60 - ✓ spaCy disponible
+2025-06-25 11:04:26 | INFO     | main:lifespan:63 - ✓ Détection de langue disponible
+2025-06-25 11:04:26 | INFO     | main:lifespan:69 - ✅ Toutes les dépendances sont prêtes
+2025-06-25 11:04:38 | INFO     | app.api.routes:start_training:219 - Entraînement lancé pour client test-client
+2025-06-25 11:04:38 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/train - Status: 200 - Time: 0.011s
+2025-06-25 11:04:38 | INFO     | app.services.trainer:__init__:150 - Trainer initialisé pour client test-client sur cpu
+2025-06-25 11:04:38 | INFO     | app.services.trainer:train:361 - Début de l'entraînement pour test-client
+2025-06-25 11:04:38 | INFO     | app.services.trainer:prepare_data:162 - Préparation des données: 25 échantillons
+2025-06-25 11:04:42 | INFO     | app.services.trainer:prepare_data:194 - Données préparées: 20 train, 5 val
+2025-06-25 11:04:42 | INFO     | app.services.trainer:build_model:207 - Construction du modèle lstm
+2025-06-25 11:04:42 | INFO     | app.services.trainer:build_model:220 - Modèle créé avec 277,381 paramètres entraînables
+2025-06-25 11:04:43 | INFO     | app.services.trainer:setup_training:249 - Configuration d'entraînement terminée
+2025-06-25 11:04:57 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:04:57 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_0.pt
+2025-06-25 11:04:57 | INFO     | app.services.trainer:train:395 - Epoch 1/5 - Train Loss: 1.6161, Train Acc: 0.1000 - Val Loss: 1.6053, Val Acc: 0.2000, Val F1: 0.0667 - Time: 14.15s
+2025-06-25 11:05:11 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:05:11 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_1.pt
+2025-06-25 11:05:11 | INFO     | app.services.trainer:train:395 - Epoch 2/5 - Train Loss: 1.6114, Train Acc: 0.1500 - Val Loss: 1.6018, Val Acc: 0.2000, Val F1: 0.0667 - Time: 14.05s
+2025-06-25 11:05:26 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:05:26 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_2.pt
+2025-06-25 11:05:26 | INFO     | app.services.trainer:train:395 - Epoch 3/5 - Train Loss: 1.5862, Train Acc: 0.2000 - Val Loss: 1.5962, Val Acc: 0.2000, Val F1: 0.0667 - Time: 14.12s
+2025-06-25 11:05:40 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:05:40 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_3.pt
+2025-06-25 11:05:40 | INFO     | app.services.trainer:train:395 - Epoch 4/5 - Train Loss: 1.6228, Train Acc: 0.2000 - Val Loss: 1.5949, Val Acc: 0.2000, Val F1: 0.0667 - Time: 14.08s
+2025-06-25 11:05:53 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:05:53 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_4.pt
+2025-06-25 11:05:53 | INFO     | app.services.trainer:train:395 - Epoch 5/5 - Train Loss: 1.6530, Train Acc: 0.1500 - Val Loss: 1.5919, Val Acc: 0.0000, Val F1: 0.0000 - Time: 13.39s
+2025-06-25 11:05:53 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_4.pt
+2025-06-25 11:05:53 | INFO     | app.services.trainer:train:422 - Entraînement terminé en 75.35s
+2025-06-25 11:05:53 | INFO     | app.api.routes:run_training_background:262 - Entraînement terminé pour test-client
+2025-06-25 11:05:53 | INFO     | main:log_requests:135 - GET /api/v1/clients/test-client/training-status - Status: 200 - Time: 0.001s
+2025-06-25 11:05:53 | INFO     | main:log_requests:135 - GET /docs - Status: 200 - Time: 0.001s
+2025-06-25 11:05:53 | INFO     | main:log_requests:135 - GET / - Status: 200 - Time: 0.001s
+2025-06-25 11:05:53 | INFO     | main:log_requests:135 - GET /favicon.ico - Status: 404 - Time: 0.001s
+2025-06-25 11:06:07 | INFO     | main:log_requests:135 - GET /docs - Status: 200 - Time: 0.000s
+2025-06-25 11:06:07 | INFO     | main:log_requests:135 - GET /openapi.json - Status: 200 - Time: 0.017s
+2025-06-25 11:06:31 | INFO     | app.api.routes:start_training:219 - Entraînement lancé pour client test-client
+2025-06-25 11:06:31 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/train - Status: 200 - Time: 0.000s
+2025-06-25 11:06:31 | INFO     | app.services.trainer:__init__:150 - Trainer initialisé pour client test-client sur cpu
+2025-06-25 11:06:31 | INFO     | app.services.trainer:train:361 - Début de l'entraînement pour test-client
+2025-06-25 11:06:31 | INFO     | app.services.trainer:prepare_data:162 - Préparation des données: 25 échantillons
+2025-06-25 11:06:32 | INFO     | app.services.trainer:prepare_data:194 - Données préparées: 20 train, 5 val
+2025-06-25 11:06:32 | INFO     | app.services.trainer:build_model:207 - Construction du modèle lstm
+2025-06-25 11:06:32 | INFO     | app.services.trainer:build_model:220 - Modèle créé avec 277,381 paramètres entraînables
+2025-06-25 11:06:32 | INFO     | app.services.trainer:setup_training:249 - Configuration d'entraînement terminée
+2025-06-25 11:06:45 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:06:45 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_0.pt
+2025-06-25 11:06:45 | INFO     | app.services.trainer:train:395 - Epoch 1/5 - Train Loss: 1.6182, Train Acc: 0.2000 - Val Loss: 1.6139, Val Acc: 0.2000, Val F1: 0.0667 - Time: 13.45s
+2025-06-25 11:06:59 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:06:59 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_1.pt
+2025-06-25 11:06:59 | INFO     | app.services.trainer:train:395 - Epoch 2/5 - Train Loss: 1.6154, Train Acc: 0.2000 - Val Loss: 1.6102, Val Acc: 0.2000, Val F1: 0.0667 - Time: 14.01s
+2025-06-25 11:07:13 | INFO     | app.services.trainer:train:395 - Epoch 3/5 - Train Loss: 1.6191, Train Acc: 0.2000 - Val Loss: 1.6179, Val Acc: 0.0000, Val F1: 0.0000 - Time: 13.78s
+2025-06-25 11:07:27 | INFO     | app.services.trainer:train:395 - Epoch 4/5 - Train Loss: 1.6153, Train Acc: 0.1500 - Val Loss: 1.6170, Val Acc: 0.2000, Val F1: 0.0667 - Time: 13.55s
+2025-06-25 11:07:40 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:07:40 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_4.pt
+2025-06-25 11:07:40 | INFO     | app.services.trainer:train:395 - Epoch 5/5 - Train Loss: 1.6046, Train Acc: 0.2500 - Val Loss: 1.6089, Val Acc: 0.2000, Val F1: 0.0667 - Time: 13.08s
+2025-06-25 11:07:40 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_4.pt
+2025-06-25 11:07:40 | INFO     | app.services.trainer:train:422 - Entraînement terminé en 69.12s
+2025-06-25 11:07:40 | INFO     | app.api.routes:run_training_background:262 - Entraînement terminé pour test-client
+2025-06-25 11:07:40 | INFO     | main:log_requests:135 - GET /api/v1/clients/test-client/training-status - Status: 200 - Time: 0.000s
+2025-06-25 11:08:52 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.039s
+2025-06-25 11:09:56 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.019s
+2025-06-25 11:10:25 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.024s
+2025-06-25 11:10:59 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.021s
+2025-06-25 11:14:53 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/train - Status: 422 - Time: 0.001s
+2025-06-25 11:15:14 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/train - Status: 422 - Time: 0.008s
+2025-06-25 11:15:51 | INFO     | app.api.routes:delete_client_model:452 - Modèle test-client supprimé
+2025-06-25 11:15:51 | INFO     | main:log_requests:135 - DELETE /api/v1/clients/test-client/model - Status: 200 - Time: 0.006s
+2025-06-25 11:16:00 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/train - Status: 422 - Time: 0.000s
+2025-06-25 11:18:47 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/train - Status: 422 - Time: 0.000s
+2025-06-25 11:19:47 | INFO     | app.api.routes:start_training:219 - Entraînement lancé pour client test-client
+2025-06-25 11:19:47 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/train - Status: 200 - Time: 0.012s
+2025-06-25 11:19:47 | INFO     | app.services.trainer:__init__:150 - Trainer initialisé pour client test-client sur cpu
+2025-06-25 11:19:47 | INFO     | app.services.trainer:train:361 - Début de l'entraînement pour test-client
+2025-06-25 11:19:47 | INFO     | app.services.trainer:prepare_data:162 - Préparation des données: 250 échantillons
+2025-06-25 11:19:52 | INFO     | app.services.trainer:prepare_data:194 - Données préparées: 200 train, 50 val
+2025-06-25 11:19:52 | INFO     | app.services.trainer:build_model:207 - Construction du modèle lstm
+2025-06-25 11:19:52 | INFO     | app.services.trainer:build_model:220 - Modèle créé avec 293,765 paramètres entraînables
+2025-06-25 11:19:52 | INFO     | app.services.trainer:setup_training:249 - Configuration d'entraînement terminée
+2025-06-25 11:20:16 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:20:16 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_0.pt
+2025-06-25 11:20:16 | INFO     | app.services.trainer:train:395 - Epoch 1/15 - Train Loss: 1.6100, Train Acc: 0.2000 - Val Loss: 1.6067, Val Acc: 0.2000, Val F1: 0.0667 - Time: 24.01s
+2025-06-25 11:20:41 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:20:41 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_1.pt
+2025-06-25 11:20:41 | INFO     | app.services.trainer:train:395 - Epoch 2/15 - Train Loss: 1.6111, Train Acc: 0.2300 - Val Loss: 1.6052, Val Acc: 0.2000, Val F1: 0.0667 - Time: 25.31s
+2025-06-25 11:21:05 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:21:05 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_2.pt
+2025-06-25 11:21:05 | INFO     | app.services.trainer:train:395 - Epoch 3/15 - Train Loss: 1.5997, Train Acc: 0.2500 - Val Loss: 1.5870, Val Acc: 0.3000, Val F1: 0.2422 - Time: 24.21s
+2025-06-25 11:21:30 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:21:30 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_3.pt
+2025-06-25 11:21:30 | INFO     | app.services.trainer:train:395 - Epoch 4/15 - Train Loss: 1.5496, Train Acc: 0.2550 - Val Loss: 1.4980, Val Acc: 0.4400, Val F1: 0.3962 - Time: 24.75s
+2025-06-25 11:21:55 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:21:55 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_4.pt
+2025-06-25 11:21:55 | INFO     | app.services.trainer:train:395 - Epoch 5/15 - Train Loss: 1.4351, Train Acc: 0.3400 - Val Loss: 1.2840, Val Acc: 0.4800, Val F1: 0.4158 - Time: 25.08s
+2025-06-25 11:22:19 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:22:19 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_5.pt
+2025-06-25 11:22:19 | INFO     | app.services.trainer:train:395 - Epoch 6/15 - Train Loss: 1.2140, Train Acc: 0.4850 - Val Loss: 1.0583, Val Acc: 0.5800, Val F1: 0.5446 - Time: 23.26s
+2025-06-25 11:22:42 | INFO     | app.services.trainer:train:395 - Epoch 7/15 - Train Loss: 1.1677, Train Acc: 0.5100 - Val Loss: 1.2021, Val Acc: 0.5200, Val F1: 0.4584 - Time: 23.15s
+2025-06-25 11:23:05 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:23:05 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_7.pt
+2025-06-25 11:23:05 | INFO     | app.services.trainer:train:395 - Epoch 8/15 - Train Loss: 0.8641, Train Acc: 0.6300 - Val Loss: 1.0206, Val Acc: 0.5600, Val F1: 0.5492 - Time: 23.08s
+2025-06-25 11:23:29 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:23:29 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_8.pt
+2025-06-25 11:23:29 | INFO     | app.services.trainer:train:395 - Epoch 9/15 - Train Loss: 0.7857, Train Acc: 0.6800 - Val Loss: 0.9266, Val Acc: 0.6600, Val F1: 0.6337 - Time: 24.13s
+2025-06-25 11:23:51 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_9.pt
+2025-06-25 11:23:51 | INFO     | app.services.trainer:train:395 - Epoch 10/15 - Train Loss: 0.6053, Train Acc: 0.7750 - Val Loss: 1.2587, Val Acc: 0.6000, Val F1: 0.5751 - Time: 22.39s
+2025-06-25 11:24:14 | INFO     | app.services.trainer:train:395 - Epoch 11/15 - Train Loss: 0.5956, Train Acc: 0.7900 - Val Loss: 1.0366, Val Acc: 0.7200, Val F1: 0.7122 - Time: 22.78s
+2025-06-25 11:24:38 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 11:24:38 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_11.pt
+2025-06-25 11:24:38 | INFO     | app.services.trainer:train:395 - Epoch 12/15 - Train Loss: 0.4832, Train Acc: 0.8050 - Val Loss: 0.8909, Val Acc: 0.7200, Val F1: 0.7110 - Time: 23.44s
+2025-06-25 11:24:59 | INFO     | app.services.trainer:train:395 - Epoch 13/15 - Train Loss: 0.4033, Train Acc: 0.8300 - Val Loss: 1.1539, Val Acc: 0.6200, Val F1: 0.6180 - Time: 21.87s
+2025-06-25 11:25:21 | INFO     | app.services.trainer:train:395 - Epoch 14/15 - Train Loss: 0.4094, Train Acc: 0.8600 - Val Loss: 1.3238, Val Acc: 0.7000, Val F1: 0.6939 - Time: 22.04s
+2025-06-25 11:25:45 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_14.pt
+2025-06-25 11:25:45 | INFO     | app.services.trainer:train:395 - Epoch 15/15 - Train Loss: 0.5726, Train Acc: 0.8500 - Val Loss: 1.3083, Val Acc: 0.6400, Val F1: 0.6376 - Time: 23.62s
+2025-06-25 11:25:45 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_14.pt
+2025-06-25 11:25:45 | INFO     | app.services.trainer:train:422 - Entraînement terminé en 357.94s
+2025-06-25 11:25:45 | INFO     | app.api.routes:run_training_background:262 - Entraînement terminé pour test-client
+2025-06-25 11:25:45 | INFO     | main:log_requests:135 - GET /api/v1/clients/test-client/training-status - Status: 200 - Time: 0.000s
+2025-06-25 11:26:22 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.048s
+2025-06-25 11:26:44 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.022s
+2025-06-25 11:27:06 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.021s
+2025-06-25 11:27:22 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.020s
+2025-06-25 11:28:29 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.020s
+2025-06-25 11:28:53 | INFO     | main:log_requests:135 - GET /api/v1/clients/test-client/model-info - Status: 200 - Time: 0.000s
+2025-06-25 11:30:00 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/batch-predict - Status: 200 - Time: 0.092s
+2025-06-25 11:34:24 | INFO     | main:lifespan:74 - 🛑 Arrêt de Sentiment AI Platform
+2025-06-25 11:38:00 | INFO     | __main__:<module>:220 - 🎯 Lancement du serveur sur 0.0.0.0:8000
+2025-06-25 11:38:00 | INFO     | main:lifespan:44 - 🚀 Démarrage de Sentiment AI Platform
+2025-06-25 11:38:00 | INFO     | main:lifespan:54 - ✓ PyTorch 2.5.0+cpu - CUDA: False
+2025-06-25 11:38:00 | INFO     | main:lifespan:57 - ✓ NLTK disponible
+2025-06-25 11:38:00 | INFO     | main:lifespan:60 - ✓ spaCy disponible
+2025-06-25 11:38:00 | INFO     | main:lifespan:63 - ✓ Détection de langue disponible
+2025-06-25 11:38:00 | INFO     | main:lifespan:69 - ✅ Toutes les dépendances sont prêtes
+2025-06-25 11:38:05 | INFO     | main:log_requests:135 - GET /docs - Status: 200 - Time: 0.000s
+2025-06-25 11:38:05 | INFO     | main:log_requests:135 - GET /openapi.json - Status: 200 - Time: 0.108s
+2025-06-25 11:38:17 | INFO     | main:log_requests:135 - DELETE /api/v1/clients/test-client/model - Status: 404 - Time: 0.000s
+2025-06-25 11:39:31 | INFO     | main:log_requests:135 - GET /api/v1/health - Status: 200 - Time: 0.000s
+2025-06-25 11:39:54 | INFO     | app.api.routes:validate_training_data:156 - Validation données client test-client: 1 échantillons
+2025-06-25 11:39:54 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/validate-data - Status: 200 - Time: 0.004s
+2025-06-25 12:17:16 | INFO     | main:log_requests:135 - GET /docs - Status: 200 - Time: 0.000s
+2025-06-25 12:17:16 | INFO     | main:log_requests:135 - GET /openapi.json - Status: 200 - Time: 0.000s
+2025-06-25 12:17:26 | INFO     | app.api.routes:validate_training_data:156 - Validation données client test-client: 1 échantillons
+2025-06-25 12:17:26 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/validate-data - Status: 200 - Time: 0.010s
+2025-06-25 12:18:37 | INFO     | app.api.routes:start_training:219 - Entraînement lancé pour client test-client
+2025-06-25 12:18:37 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/train - Status: 200 - Time: 0.016s
+2025-06-25 12:18:37 | INFO     | app.services.trainer:__init__:150 - Trainer initialisé pour client test-client sur cpu
+2025-06-25 12:18:37 | INFO     | app.services.trainer:train:361 - Début de l'entraînement pour test-client
+2025-06-25 12:18:37 | INFO     | app.services.trainer:prepare_data:162 - Préparation des données: 464 échantillons
+2025-06-25 12:18:38 | INFO     | app.services.trainer:prepare_data:194 - Données préparées: 371 train, 93 val
+2025-06-25 12:18:38 | INFO     | app.services.trainer:build_model:207 - Construction du modèle lstm
+2025-06-25 12:18:38 | INFO     | app.services.trainer:build_model:220 - Modèle créé avec 1,113,429 paramètres entraînables
+2025-06-25 12:18:40 | INFO     | app.services.trainer:setup_training:249 - Configuration d'entraînement terminée
+2025-06-25 12:19:28 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 12:19:28 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_0.pt
+2025-06-25 12:19:28 | INFO     | app.services.trainer:train:395 - Epoch 1/20 - Train Loss: 1.6163, Train Acc: 0.2399 - Val Loss: 1.5782, Val Acc: 0.2796, Val F1: 0.1222 - Time: 48.53s
+2025-06-25 12:20:13 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 12:20:13 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_1.pt
+2025-06-25 12:20:13 | INFO     | app.services.trainer:train:395 - Epoch 2/20 - Train Loss: 1.5907, Train Acc: 0.2803 - Val Loss: 1.5646, Val Acc: 0.2796, Val F1: 0.1222 - Time: 45.15s
+2025-06-25 12:20:57 | INFO     | app.services.trainer:train:395 - Epoch 3/20 - Train Loss: 1.5836, Train Acc: 0.3046 - Val Loss: 1.5689, Val Acc: 0.2796, Val F1: 0.1389 - Time: 44.07s
+2025-06-25 12:21:39 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 12:21:39 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_3.pt
+2025-06-25 12:21:39 | INFO     | app.services.trainer:train:395 - Epoch 4/20 - Train Loss: 1.5006, Train Acc: 0.2938 - Val Loss: 1.5546, Val Acc: 0.3333, Val F1: 0.2203 - Time: 41.97s
+2025-06-25 12:22:19 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 12:22:19 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_4.pt
+2025-06-25 12:22:19 | INFO     | app.services.trainer:train:395 - Epoch 5/20 - Train Loss: 1.3858, Train Acc: 0.3504 - Val Loss: 1.5529, Val Acc: 0.3548, Val F1: 0.2313 - Time: 40.16s
+2025-06-25 12:22:58 | INFO     | app.services.trainer:save_model:346 - Nouveau meilleur modèle sauvegardé: models\test-client\best_model.pt
+2025-06-25 12:22:58 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_5.pt
+2025-06-25 12:22:58 | INFO     | app.services.trainer:train:395 - Epoch 6/20 - Train Loss: 1.2701, Train Acc: 0.3827 - Val Loss: 1.5261, Val Acc: 0.3548, Val F1: 0.2284 - Time: 38.59s
+2025-06-25 12:23:37 | INFO     | app.services.trainer:train:395 - Epoch 7/20 - Train Loss: 1.2485, Train Acc: 0.4286 - Val Loss: 1.6120, Val Acc: 0.3441, Val F1: 0.2436 - Time: 39.03s
+2025-06-25 12:24:16 | INFO     | app.services.trainer:train:395 - Epoch 8/20 - Train Loss: 1.1325, Train Acc: 0.4501 - Val Loss: 1.5912, Val Acc: 0.3978, Val F1: 0.3693 - Time: 39.16s
+2025-06-25 12:24:53 | INFO     | app.services.trainer:train:395 - Epoch 9/20 - Train Loss: 1.1002, Train Acc: 0.4663 - Val Loss: 1.6636, Val Acc: 0.2581, Val F1: 0.2628 - Time: 36.84s
+2025-06-25 12:25:22 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_9.pt
+2025-06-25 12:25:22 | INFO     | app.services.trainer:train:395 - Epoch 10/20 - Train Loss: 0.9453, Train Acc: 0.5660 - Val Loss: 2.0418, Val Acc: 0.3118, Val F1: 0.3198 - Time: 29.43s
+2025-06-25 12:25:58 | INFO     | app.services.trainer:train:395 - Epoch 11/20 - Train Loss: 0.8691, Train Acc: 0.6496 - Val Loss: 2.4598, Val Acc: 0.4086, Val F1: 0.4091 - Time: 35.16s
+2025-06-25 12:26:38 | INFO     | app.services.trainer:train:395 - Epoch 12/20 - Train Loss: 0.8824, Train Acc: 0.6253 - Val Loss: 2.3089, Val Acc: 0.3656, Val F1: 0.3968 - Time: 40.69s
+2025-06-25 12:27:19 | INFO     | app.services.trainer:train:395 - Epoch 13/20 - Train Loss: 0.7677, Train Acc: 0.6739 - Val Loss: 2.3071, Val Acc: 0.3226, Val F1: 0.3286 - Time: 40.89s
+2025-06-25 12:28:06 | INFO     | app.services.trainer:train:395 - Epoch 14/20 - Train Loss: 0.7108, Train Acc: 0.7143 - Val Loss: 2.9095, Val Acc: 0.4301, Val F1: 0.4331 - Time: 46.36s
+2025-06-25 12:28:50 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_14.pt
+2025-06-25 12:28:50 | INFO     | app.services.trainer:train:395 - Epoch 15/20 - Train Loss: 0.6250, Train Acc: 0.7601 - Val Loss: 3.0602, Val Acc: 0.3978, Val F1: 0.3945 - Time: 44.32s
+2025-06-25 12:29:40 | INFO     | app.services.trainer:train:395 - Epoch 16/20 - Train Loss: 0.5718, Train Acc: 0.7951 - Val Loss: 3.2967, Val Acc: 0.3548, Val F1: 0.3676 - Time: 50.64s
+2025-06-25 12:29:40 | INFO     | app.services.trainer:train:404 - Early stopping à l'epoch 16
+2025-06-25 12:29:40 | DEBUG    | app.services.trainer:save_model:348 - Checkpoint sauvegardé: models\test-client\checkpoint_epoch_15.pt
+2025-06-25 12:29:40 | INFO     | app.services.trainer:train:422 - Entraînement terminé en 663.90s
+2025-06-25 12:29:40 | INFO     | app.api.routes:run_training_background:262 - Entraînement terminé pour test-client
+2025-06-25 12:29:40 | INFO     | main:log_requests:135 - GET /api/v1/clients/test-client/training-status - Status: 200 - Time: 0.000s
+2025-06-25 12:31:27 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.063s
+2025-06-25 12:33:12 | INFO     | main:lifespan:74 - 🛑 Arrêt de Sentiment AI Platform
