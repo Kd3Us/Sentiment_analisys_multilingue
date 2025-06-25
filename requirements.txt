@@ -18,7 +18,7 @@ nltk>=3.8.1
 spacy>=3.7.0
 langdetect>=1.0.9
 
-# Database (optionnel pour le développement)
+# Database (optional for development)
 sqlalchemy>=2.0.0
 redis>=4.5.0
 

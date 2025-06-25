@@ -1,6 +1,6 @@
 """
-Service d'entraînement des modèles pour chaque client.
-Ce module gère l'entraînement personnalisé des modèles de sentiment.
+Model training service for each client.
+This module handles personalized sentiment model training.
 """
 
 import os
@@ -25,31 +25,31 @@ from ..config.settings import settings, model_config
 
 @dataclass
 class TrainingConfig:
-    """Configuration pour l'entraînement"""
+    """Training configuration"""
     client_id: str
     architecture: str = "lstm"
     sentiment_levels: int = 5
     languages: List[str] = None
     
-    # Hyperparamètres
+    # Hyperparameters
     batch_size: int = 32
     learning_rate: float = 0.001
     epochs: int = 50
     validation_split: float = 0.2
     early_stopping_patience: int = 10
     
-    # Modèle
+    # Model
     embed_dim: int = 300
     hidden_dim: int = 256
     dropout: float = 0.3
     
-    # Sauvegardes
+    # Saving
     save_best_only: bool = True
-    save_frequency: int = 5  # Sauvegarder tous les X epochs
+    save_frequency: int = 5  # Save every X epochs
 
 
 class SentimentDataset(Dataset):
-    """Dataset PyTorch pour l'analyse de sentiment"""
+    """PyTorch dataset for sentiment analysis"""
     
     def __init__(self, data: List[Dict], max_length: int = 512):
         self.data = data
@@ -63,11 +63,11 @@ class SentimentDataset(Dataset):
         
         input_ids = torch.tensor(item['input_ids'][:self.max_length], dtype=torch.long)
         
-        # Convertir sentiment de [-2, +2] vers [0, 4] pour PyTorch
+        # Convert sentiment from [-2, +2] to [0, 4] for PyTorch
         sentiment_normalized = item['sentiment'] + 2  # -2->0, -1->1, 0->2, 1->3, 2->4
         sentiment = torch.tensor(sentiment_normalized, dtype=torch.long)
         
-        # Créer le masque d'attention (1 pour les tokens réels, 0 pour le padding)
+        # Create attention mask (1 for real tokens, 0 for padding)
         attention_mask = (input_ids != 0).float()
         
         return {
@@ -79,7 +79,7 @@ class SentimentDataset(Dataset):
 
 
 class TrainingMetrics:
-    """Classe pour suivre les métriques d'entraînement"""
+    """Class to track training metrics"""
     
     def __init__(self):
         self.reset()
@@ -103,13 +103,13 @@ class TrainingMetrics:
         self.val_accuracies.append(val_acc)
         self.val_f1_scores.append(val_f1)
         
-        # Vérifier si c'est le meilleur modèle
+        # Check if this is the best model
         if val_loss < self.best_val_loss:
             self.best_val_loss = val_loss
             self.best_val_acc = val_acc
             self.best_epoch = epoch
             self.epochs_without_improvement = 0
-            return True  # Nouveau meilleur modèle
+            return True  # New best model
         else:
             self.epochs_without_improvement += 1
             return False
@@ -131,7 +131,7 @@ class TrainingMetrics:
 
 
 class ModelTrainer:
-    """Classe principale pour l'entraînement des modèles clients"""
+    """Main class for client model training"""
     
     def __init__(self, config: TrainingConfig):
         self.config = config
@@ -143,38 +143,38 @@ class ModelTrainer:
         self.criterion = None
         self.metrics = TrainingMetrics()
         
-        # Créer les dossiers de sauvegarde
+        # Create save directories
         self.model_dir = Path(settings.MODELS_PATH) / config.client_id
         self.model_dir.mkdir(parents=True, exist_ok=True)
         
-        logger.info(f"Trainer initialisé pour client {config.client_id} sur {self.device}")
+        logger.info(f"Trainer initialized for client {config.client_id} on {self.device}")
     
     def prepare_data(self, raw_data: List[Dict]) -> Tuple[DataLoader, DataLoader]:
         """
-        Prépare les données pour l'entraînement
+        Prepares data for training
         
         Args:
-            raw_data: Données brutes du client
+            raw_data: Client raw data
             
         Returns:
             Tuple (train_loader, val_loader)
         """
-        logger.info(f"Préparation des données: {len(raw_data)} échantillons")
+        logger.info(f"Preparing data: {len(raw_data)} samples")
         
-        # Initialiser le processeur
+        # Initialize processor
         self.processor = MultilingualProcessor()
         
-        # Traiter les données
+        # Process data
         train_data, val_data = self.processor.process_dataset(
             raw_data, 
             validation_split=self.config.validation_split
         )
         
-        # Créer les datasets
+        # Create datasets
         train_dataset = SentimentDataset(train_data['data'])
         val_dataset = SentimentDataset(val_data['data'])
         
-        # Créer les dataloaders
+        # Create dataloaders
         train_loader = DataLoader(
             train_dataset,
             batch_size=self.config.batch_size,
@@ -191,20 +191,20 @@ class ModelTrainer:
             pin_memory=True if self.device.type == 'cuda' else False
         )
         
-        logger.info(f"Données préparées: {len(train_dataset)} train, {len(val_dataset)} val")
+        logger.info(f"Data prepared: {len(train_dataset)} train, {len(val_dataset)} val")
         return train_loader, val_loader
     
     def build_model(self, vocab_size: int) -> nn.Module:
         """
-        Construit le modèle selon la configuration
+        Builds model according to configuration
         
         Args:
-            vocab_size: Taille du vocabulaire
+            vocab_size: Vocabulary size
             
         Returns:
-            Modèle PyTorch
+            PyTorch model
         """
-        logger.info(f"Construction du modèle {self.config.architecture}")
+        logger.info(f"Building {self.config.architecture} model")
         
         model = get_model_architecture(
             architecture=self.config.architecture,
@@ -215,22 +215,22 @@ class ModelTrainer:
             dropout=self.config.dropout
         )
         
-        # Compter les paramètres
+        # Count parameters
         param_count = count_parameters(model)
-        logger.info(f"Modèle créé avec {param_count['trainable_parameters']:,} paramètres entraînables")
+        logger.info(f"Model created with {param_count['trainable_parameters']:,} trainable parameters")
         
-        # Déplacer sur GPU si disponible
+        # Move to GPU if available
         model = model.to(self.device)
         
         return model
     
     def setup_training(self, model: nn.Module):
-        """Configure l'optimiseur, le scheduler et la fonction de perte"""
+        """Configures optimizer, scheduler and loss function"""
         
-        # Fonction de perte
+        # Loss function
         self.criterion = nn.CrossEntropyLoss()
         
-        # Optimiseur
+        # Optimizer
         self.optimizer = optim.AdamW(
             model.parameters(),
             lr=self.config.learning_rate,
@@ -246,11 +246,11 @@ class ModelTrainer:
             verbose=True
         )
         
-        logger.info("Configuration d'entraînement terminée")
+        logger.info("Training configuration completed")
     
     def train_epoch(self, model: nn.Module, train_loader: DataLoader) -> Tuple[float, float]:
         """
-        Entraîne le modèle pour une epoch
+        Trains model for one epoch
         
         Returns:
             Tuple (loss, accuracy)
@@ -275,7 +275,7 @@ class ModelTrainer:
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             self.optimizer.step()
             
-            # Statistiques
+            # Statistics
             total_loss += loss.item()
             _, predicted = torch.max(outputs.data, 1)
             total_predictions += labels.size(0)
@@ -288,7 +288,7 @@ class ModelTrainer:
     
     def validate_epoch(self, model: nn.Module, val_loader: DataLoader) -> Tuple[float, float, float]:
         """
-        Valide le modèle
+        Validates model
         
         Returns:
             Tuple (loss, accuracy, f1_score)
@@ -320,7 +320,7 @@ class ModelTrainer:
         return avg_loss, accuracy, f1
     
     def save_model(self, model: nn.Module, epoch: int, is_best: bool = False):
-        """Sauvegarde le modèle"""
+        """Saves model checkpoint"""
         checkpoint = {
             'epoch': epoch,
             'model_state_dict': model.state_dict(),
@@ -335,58 +335,58 @@ class ModelTrainer:
             'metrics': self.metrics.get_summary()
         }
         
-        # Sauvegarde standard
+        # Standard save
         checkpoint_path = self.model_dir / f"checkpoint_epoch_{epoch}.pt"
         torch.save(checkpoint, checkpoint_path)
         
-        # Sauvegarde du meilleur modèle
+        # Best model save
         if is_best:
             best_path = self.model_dir / "best_model.pt"
             torch.save(checkpoint, best_path)
-            logger.info(f"Nouveau meilleur modèle sauvegardé: {best_path}")
+            logger.info(f"New best model saved: {best_path}")
         
-        logger.debug(f"Checkpoint sauvegardé: {checkpoint_path}")
+        logger.debug(f"Checkpoint saved: {checkpoint_path}")
     
     def train(self, raw_data: List[Dict]) -> Dict:
         """
-        Lance l'entraînement complet
+        Launches complete training
         
         Args:
-            raw_data: Données d'entraînement du client
+            raw_data: Client training data
             
         Returns:
-            Dictionnaire avec les résultats d'entraînement
+            Dictionary with training results
         """
         start_time = time.time()
-        logger.info(f"Début de l'entraînement pour {self.config.client_id}")
+        logger.info(f"Starting training for {self.config.client_id}")
         
         try:
-            # Préparer les données
+            # Prepare data
             train_loader, val_loader = self.prepare_data(raw_data)
             
-            # Construire le modèle
+            # Build model
             self.model = self.build_model(self.processor.vocab_size)
             
-            # Configurer l'entraînement
+            # Configure training
             self.setup_training(self.model)
             
-            # Boucle d'entraînement
+            # Training loop
             for epoch in range(self.config.epochs):
                 epoch_start = time.time()
                 
-                # Entraînement
+                # Training
                 train_loss, train_acc = self.train_epoch(self.model, train_loader)
                 
                 # Validation
                 val_loss, val_acc, val_f1 = self.validate_epoch(self.model, val_loader)
                 
-                # Mettre à jour les métriques
+                # Update metrics
                 is_best = self.metrics.update(epoch, train_loss, val_loss, train_acc, val_acc, val_f1)
                 
                 # Scheduler
                 self.scheduler.step(val_loss)
                 
-                # Sauvegarde
+                # Saving
                 if is_best or (epoch + 1) % self.config.save_frequency == 0:
                     self.save_model(self.model, epoch, is_best)
                 
@@ -401,13 +401,13 @@ class ModelTrainer:
                 
                 # Early stopping
                 if self.metrics.should_stop_early(self.config.early_stopping_patience):
-                    logger.info(f"Early stopping à l'epoch {epoch+1}")
+                    logger.info(f"Early stopping at epoch {epoch+1}")
                     break
             
-            # Sauvegarde finale
+            # Final save
             self.save_model(self.model, epoch, False)
             
-            # Résultats
+            # Results
             total_time = time.time() - start_time
             results = {
                 'client_id': self.config.client_id,
@@ -419,30 +419,30 @@ class ModelTrainer:
                 'model_path': str(self.model_dir / "best_model.pt")
             }
             
-            logger.info(f"Entraînement terminé en {total_time:.2f}s")
+            logger.info(f"Training completed in {total_time:.2f}s")
             return results
             
         except Exception as e:
-            logger.error(f"Erreur pendant l'entraînement: {str(e)}")
+            logger.error(f"Training error: {str(e)}")
             raise
     
     def load_model(self, model_path: str) -> nn.Module:
-        """Charge un modèle sauvegardé"""
+        """Loads saved model"""
         checkpoint = torch.load(model_path, map_location=self.device)
         
-        # Reconstruire le modèle
+        # Rebuild model
         vocab_size = checkpoint['vocab_size']
         model = self.build_model(vocab_size)
         
-        # Charger les poids
+        # Load weights
         model.load_state_dict(checkpoint['model_state_dict'])
         
-        # Restaurer le processeur
+        # Restore processor
         self.processor = MultilingualProcessor()
         self.processor.vocab_to_idx = checkpoint['processor_state']['vocab_to_idx']
         self.processor.idx_to_vocab = checkpoint['processor_state']['idx_to_vocab']
         self.processor.special_tokens = checkpoint['processor_state']['special_tokens']
         self.processor.vocab_size = vocab_size
         
-        logger.info(f"Modèle chargé depuis {model_path}")
+        logger.info(f"Model loaded from {model_path}")
         return model

@@ -268,3 +268,11 @@ timestamp
 2025-06-25 12:29:40 | INFO     | main:log_requests:135 - GET /api/v1/clients/test-client/training-status - Status: 200 - Time: 0.000s
 2025-06-25 12:31:27 | INFO     | main:log_requests:135 - POST /api/v1/clients/test-client/predict - Status: 200 - Time: 0.063s
 2025-06-25 12:33:12 | INFO     | main:lifespan:74 - 🛑 Arrêt de Sentiment AI Platform
+2025-06-25 13:53:50 | INFO     | __main__:<module>:219 - Starting server on 0.0.0.0:8000
+2025-06-25 13:53:50 | INFO     | main:lifespan:43 - Starting Sentiment AI Platform
+2025-06-25 13:53:50 | INFO     | main:lifespan:53 - PyTorch 2.5.0+cpu - CUDA: False
+2025-06-25 13:53:50 | INFO     | main:lifespan:56 - NLTK available
+2025-06-25 13:53:50 | INFO     | main:lifespan:59 - spaCy available
+2025-06-25 13:53:50 | INFO     | main:lifespan:62 - Language detection available
+2025-06-25 13:53:50 | INFO     | main:lifespan:68 - All dependencies ready
+2025-06-25 13:53:54 | INFO     | main:lifespan:73 - Shutting down Sentiment AI Platform

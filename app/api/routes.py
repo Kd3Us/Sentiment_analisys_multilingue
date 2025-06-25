@@ -1,6 +1,6 @@
 """
-Routes API pour la plateforme d'analyse de sentiment.
-Ce module définit tous les endpoints de l'API REST.
+API routes for the sentiment analysis platform.
+This module defines all REST API endpoints.
 """
 
 import asyncio
@@ -20,15 +20,15 @@ from ..services.trainer import ModelTrainer, TrainingConfig
 from ..core.data_processor import MultilingualProcessor
 from ..config.settings import settings
 
-# Router principal
+# Main router
 router = APIRouter(prefix=settings.API_V1_STR)
 
-# Stockage en mémoire des modèles actifs et des statuts d'entraînement
+# In-memory storage for active models and training status
 active_models: Dict[str, ModelTrainer] = {}
 training_status: Dict[str, TrainingStatus] = {}
 client_stats: Dict[str, ClientStats] = {}
 
-# Gestionnaire de connexions WebSocket
+# WebSocket connection manager
 class ConnectionManager:
     def __init__(self):
         self.active_connections: Dict[str, WebSocket] = {}
@@ -36,85 +36,85 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket, client_id: str):
         await websocket.accept()
         self.active_connections[client_id] = websocket
-        logger.info(f"Client {client_id} connecté via WebSocket")
+        logger.info(f"Client {client_id} connected via WebSocket")
 
     def disconnect(self, client_id: str):
         if client_id in self.active_connections:
             del self.active_connections[client_id]
-            logger.info(f"Client {client_id} déconnecté")
+            logger.info(f"Client {client_id} disconnected")
 
     async def send_message(self, client_id: str, message: dict):
         if client_id in self.active_connections:
             try:
                 await self.active_connections[client_id].send_json(message)
             except Exception as e:
-                logger.error(f"Erreur envoi message WebSocket {client_id}: {e}")
+                logger.error(f"WebSocket message error for {client_id}: {e}")
                 self.disconnect(client_id)
 
 manager = ConnectionManager()
 
 
-# Utilitaires
+# Utility functions
 def get_current_timestamp() -> str:
-    """Retourne le timestamp actuel"""
+    """Returns current timestamp"""
     return datetime.now().isoformat()
 
 
 def generate_request_id() -> str:
-    """Génère un ID unique pour la requête"""
+    """Generates unique request ID"""
     return str(uuid.uuid4())
 
 
 async def validate_client_data(data: List[TrainingDataItem]) -> DataValidationResult:
-    """Valide les données d'entraînement du client"""
+    """Validates client training data"""
     warnings = []
     errors = []
     recommendations = []
     
-    # Statistiques de base
+    # Basic statistics
     total_samples = len(data)
     language_dist = {}
     sentiment_dist = {}
     text_lengths = []
     
     for item in data:
-        # Distribution des langues
+        # Language distribution
         lang = item.language or "unknown"
         language_dist[lang] = language_dist.get(lang, 0) + 1
         
-        # Distribution des sentiments (convertir les clés en strings)
+        # Sentiment distribution (convert keys to strings)
         sentiment_str = str(item.sentiment)
         sentiment_dist[sentiment_str] = sentiment_dist.get(sentiment_str, 0) + 1
         
-        # Longueurs des textes
+        # Text lengths
         text_lengths.append(len(item.text))
     
     avg_text_length = sum(text_lengths) / len(text_lengths)
     
     # Validations
     if total_samples < 100:
-        warnings.append(f"Peu de données ({total_samples}). Recommandé: >500 échantillons")
+        warnings.append(f"Limited data ({total_samples}). Recommended: >500 samples")
     
     if len(sentiment_dist) < 3:
-        warnings.append("Peu de classes de sentiment. Diversifiez vos données.")
+        warnings.append("Few sentiment classes. Consider diversifying your data.")
     
-    # Vérifier l'équilibre des classes
+    # Check class balance
     min_count = min(sentiment_dist.values())
     max_count = max(sentiment_dist.values())
     if max_count / min_count > 5:
-        warnings.append("Classes déséquilibrées détectées")
-        recommendations.append("Équilibrez vos données ou utilisez des techniques de rééchantillonnage")
+        warnings.append("Imbalanced classes detected")
+        recommendations.append("Balance your data or use resampling techniques")
     
-    # Vérifier la longueur des textes
+    # Check text lengths
     if avg_text_length < 10:
-        warnings.append("Textes très courts détectés")
+        warnings.append("Very short texts detected")
     elif avg_text_length > 500:
-        warnings.append("Textes très longs détectés")
-        recommendations.append("Considérez tronquer les textes longs")
+        warnings.append("Very long texts detected")
+        recommendations.append("Consider truncating long texts")
     
-    # Languages multiples
+    # Multiple languages
     if len(language_dist) > 1:
-        recommendations.append("Données multilingues détectées - assurez-vous d'avoir assez d'exemples par langue")
+        recommendations.append("Multilingual data detected - ensure sufficient examples per language")
     
     is_valid = len(errors) == 0
     
@@ -134,11 +134,11 @@ async def validate_client_data(data: List[TrainingDataItem]) -> DataValidationRe
 
 @router.get("/health", response_model=HealthCheck)
 async def health_check():
-    """Vérification de l'état de santé de l'API"""
+    """API health check"""
     return HealthCheck(
         status="healthy",
         version=settings.VERSION,
-        uptime=time.time(),  # Simplification pour l'exemple
+        uptime=time.time(),  # Simplified for example
         models_loaded=len(active_models),
         system_info={
             "cuda_available": torch.cuda.is_available(),
@@ -150,14 +150,14 @@ async def health_check():
 
 @router.post("/clients/{client_id}/validate-data", response_model=DataValidationResult)
 async def validate_training_data(client_id: str, data: List[TrainingDataItem]):
-    """Valide les données d'entraînement avant le lancement"""
+    """Validates training data before launching training"""
     try:
         result = await validate_client_data(data)
-        logger.info(f"Validation données client {client_id}: {result.total_samples} échantillons")
+        logger.info(f"Data validation for client {client_id}: {result.total_samples} samples")
         return result
     except Exception as e:
-        logger.error(f"Erreur validation données {client_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Erreur de validation: {str(e)}")
+        logger.error(f"Data validation error for {client_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Validation error: {str(e)}")
 
 
 @router.post("/clients/{client_id}/train", response_model=dict)
@@ -166,17 +166,17 @@ async def start_training(
     request: TrainingRequest, 
     background_tasks: BackgroundTasks
 ):
-    """Lance l'entraînement d'un modèle pour un client"""
+    """Starts model training for a client"""
     
-    # Vérifier si un entraînement est déjà en cours
+    # Check if training is already in progress
     if client_id in training_status and training_status[client_id].status == "training":
         raise HTTPException(
             status_code=409, 
-            detail="Un entraînement est déjà en cours pour ce client"
+            detail="Training already in progress for this client"
         )
     
     try:
-        # Valider les données
+        # Validate data
         validation_result = await validate_client_data(request.data)
         if not validation_result.is_valid:
             raise HTTPException(
@@ -184,7 +184,7 @@ async def start_training(
                 detail={"validation_errors": validation_result.errors}
             )
         
-        # Créer la configuration d'entraînement
+        # Create training configuration
         training_config = TrainingConfig(
             client_id=client_id,
             architecture=request.config.architecture.value,
@@ -200,15 +200,15 @@ async def start_training(
             dropout=request.config.dropout
         )
         
-        # Initialiser le statut
+        # Initialize status
         training_status[client_id] = TrainingStatus(
             client_id=client_id,
             status="initializing",
             progress=0.0,
-            message="Initialisation de l'entraînement..."
+            message="Initializing training..."
         )
         
-        # Lancer l'entraînement en arrière-plan
+        # Launch background training
         background_tasks.add_task(
             run_training_background,
             client_id,
@@ -216,10 +216,10 @@ async def start_training(
             [item.dict() for item in request.data]
         )
         
-        logger.info(f"Entraînement lancé pour client {client_id}")
+        logger.info(f"Training started for client {client_id}")
         
         return {
-            "message": "Entraînement lancé avec succès",
+            "message": "Training started successfully",
             "client_id": client_id,
             "status": "training",
             "estimated_time": request.config.epochs * 2
@@ -228,43 +228,43 @@ async def start_training(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Erreur lancement entraînement {client_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}")
+        logger.error(f"Training start error for {client_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
 
 async def run_training_background(client_id: str, config: TrainingConfig, data: List[Dict]):
-    """Exécute l'entraînement en arrière-plan avec suivi en temps réel"""
+    """Executes training in background with real-time monitoring"""
     try:
-        # Mettre à jour le statut
+        # Update status
         training_status[client_id].status = "training"
-        training_status[client_id].message = "Entraînement en cours..."
+        training_status[client_id].message = "Training in progress..."
         
-        # Créer le trainer
+        # Create trainer
         trainer = ModelTrainer(config)
         
-        # Lancer l'entraînement
+        # Start training
         result = trainer.train(data)
         
-        # Sauvegarder le modèle actif
+        # Save active model
         active_models[client_id] = trainer
         
-        # Mettre à jour le statut final
+        # Update final status
         training_status[client_id].status = "completed"
         training_status[client_id].progress = 1.0
-        training_status[client_id].message = "Entraînement terminé avec succès"
+        training_status[client_id].message = "Training completed successfully"
         
-        # Notifier via WebSocket
+        # Notify via WebSocket
         await manager.send_message(client_id, {
             "type": "training_completed",
             "data": result
         })
         
-        logger.info(f"Entraînement terminé pour {client_id}")
+        logger.info(f"Training completed for {client_id}")
         
     except Exception as e:
-        logger.error(f"Erreur entraînement background {client_id}: {str(e)}")
+        logger.error(f"Background training error for {client_id}: {str(e)}")
         training_status[client_id].status = "error"
-        training_status[client_id].message = f"Erreur: {str(e)}"
+        training_status[client_id].message = f"Error: {str(e)}"
         
         await manager.send_message(client_id, {
             "type": "training_error",
@@ -274,32 +274,32 @@ async def run_training_background(client_id: str, config: TrainingConfig, data: 
 
 @router.get("/clients/{client_id}/training-status", response_model=TrainingStatus)
 async def get_training_status(client_id: str):
-    """Récupère le statut d'entraînement d'un client"""
+    """Retrieves training status for a client"""
     if client_id not in training_status:
-        raise HTTPException(status_code=404, detail="Aucun entraînement trouvé pour ce client")
+        raise HTTPException(status_code=404, detail="No training found for this client")
     
     return training_status[client_id]
 
 
 @router.post("/clients/{client_id}/predict", response_model=PredictionResult)
 async def predict_sentiment(client_id: str, request: PredictionRequest):
-    """Prédit le sentiment d'un texte"""
+    """Predicts sentiment for a text"""
     
-    # Vérifier si le modèle existe
+    # Check if model exists
     if client_id not in active_models:
-        raise HTTPException(status_code=404, detail="Modèle non trouvé. Entraînez d'abord un modèle.")
+        raise HTTPException(status_code=404, detail="Model not found. Please train a model first.")
     
     try:
         start_time = time.time()
         trainer = active_models[client_id]
         
-        # Préparer le texte
+        # Prepare text
         if request.language:
             detected_language = request.language
         else:
             detected_language = trainer.processor.detect_language(request.text)
         
-        # Prédiction
+        # Prediction
         input_ids = trainer.processor.text_to_indices(request.text, detected_language)
         input_tensor = torch.tensor([input_ids]).to(trainer.device)
         attention_mask = (input_tensor != 0).float()
@@ -313,24 +313,24 @@ async def predict_sentiment(client_id: str, request: PredictionRequest):
         
         processing_time = time.time() - start_time
         
-        # Préparer la réponse
+        # Prepare response
         result = PredictionResult(
             text=request.text,
-            sentiment=predicted_class - 2,  # Reconvertir [0,4] vers [-2,+2]
+            sentiment=predicted_class - 2,  # Convert [0,4] back to [-2,+2]
             confidence=confidence,
             language_detected=detected_language,
             processing_time=processing_time
         )
         
-        # Ajouter les probabilités si demandées
+        # Add probabilities if requested
         if request.return_probabilities:
             prob_dict = {}
             for i, prob in enumerate(probabilities[0]):
-                sentiment_level = i - 2  # Reconvertir [0,4] vers [-2,+2]
+                sentiment_level = i - 2  # Convert [0,4] back to [-2,+2]
                 prob_dict[str(sentiment_level)] = prob.item()
             result.probabilities = prob_dict
         
-        # Mettre à jour les statistiques client
+        # Update client statistics
         if client_id not in client_stats:
             client_stats[client_id] = ClientStats(
                 client_id=client_id,
@@ -350,16 +350,16 @@ async def predict_sentiment(client_id: str, request: PredictionRequest):
         return result
         
     except Exception as e:
-        logger.error(f"Erreur prédiction {client_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Erreur de prédiction: {str(e)}")
+        logger.error(f"Prediction error for {client_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
 
 
 @router.post("/clients/{client_id}/batch-predict", response_model=BatchPredictionResult)
 async def batch_predict_sentiment(client_id: str, request: BatchPredictionRequest):
-    """Prédit le sentiment de plusieurs textes en une fois"""
+    """Predicts sentiment for multiple texts at once"""
     
     if client_id not in active_models:
-        raise HTTPException(status_code=404, detail="Modèle non trouvé")
+        raise HTTPException(status_code=404, detail="Model not found")
     
     try:
         start_time = time.time()
@@ -367,13 +367,13 @@ async def batch_predict_sentiment(client_id: str, request: BatchPredictionReques
         results = []
         
         for i, text in enumerate(request.texts):
-            # Langue spécifiée ou détection automatique
+            # Specific language or automatic detection
             if request.languages and i < len(request.languages):
                 language = request.languages[i]
             else:
                 language = trainer.processor.detect_language(text)
             
-            # Prédiction individuelle
+            # Individual prediction
             pred_request = PredictionRequest(
                 text=text,
                 language=language,
@@ -393,16 +393,16 @@ async def batch_predict_sentiment(client_id: str, request: BatchPredictionReques
         )
         
     except Exception as e:
-        logger.error(f"Erreur batch prédiction {client_id}: {str(e)}")
+        logger.error(f"Batch prediction error for {client_id}: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/clients/{client_id}/model-info", response_model=ModelInfo)
 async def get_model_info(client_id: str):
-    """Récupère les informations sur le modèle d'un client"""
+    """Retrieves information about a client's model"""
     
     if client_id not in active_models:
-        raise HTTPException(status_code=404, detail="Modèle non trouvé")
+        raise HTTPException(status_code=404, detail="Model not found")
     
     trainer = active_models[client_id]
     
@@ -412,7 +412,7 @@ async def get_model_info(client_id: str):
         sentiment_levels=trainer.config.sentiment_levels,
         languages=trainer.config.languages or ["auto-detect"],
         vocab_size=trainer.processor.vocab_size if trainer.processor else 0,
-        training_date=get_current_timestamp(),  # À améliorer avec la vraie date
+        training_date=get_current_timestamp(),  # Should be improved with actual date
         accuracy=trainer.metrics.best_val_acc if hasattr(trainer, 'metrics') else 0.0,
         status="active"
     )
@@ -420,51 +420,51 @@ async def get_model_info(client_id: str):
 
 @router.get("/clients/{client_id}/stats", response_model=ClientStats)
 async def get_client_stats(client_id: str):
-    """Récupère les statistiques d'un client"""
+    """Retrieves client statistics"""
     
     if client_id not in client_stats:
-        raise HTTPException(status_code=404, detail="Statistiques non trouvées")
+        raise HTTPException(status_code=404, detail="Statistics not found")
     
     return client_stats[client_id]
 
 
 @router.delete("/clients/{client_id}/model")
 async def delete_client_model(client_id: str):
-    """Supprime le modèle d'un client"""
+    """Deletes a client's model"""
     
     if client_id not in active_models:
-        raise HTTPException(status_code=404, detail="Modèle non trouvé")
+        raise HTTPException(status_code=404, detail="Model not found")
     
     try:
-        # Supprimer de la mémoire
+        # Remove from memory
         del active_models[client_id]
         
-        # Supprimer les fichiers
+        # Delete files
         model_dir = Path(settings.MODELS_PATH) / client_id
         if model_dir.exists():
             import shutil
             shutil.rmtree(model_dir)
         
-        # Nettoyer les statuts
+        # Clean up status
         if client_id in training_status:
             del training_status[client_id]
         
-        logger.info(f"Modèle {client_id} supprimé")
+        logger.info(f"Model {client_id} deleted")
         
-        return {"message": f"Modèle {client_id} supprimé avec succès"}
+        return {"message": f"Model {client_id} deleted successfully"}
         
     except Exception as e:
-        logger.error(f"Erreur suppression modèle {client_id}: {str(e)}")
+        logger.error(f"Model deletion error for {client_id}: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: str):
-    """WebSocket pour le suivi en temps réel de l'entraînement"""
+    """WebSocket for real-time training monitoring"""
     await manager.connect(websocket, client_id)
     try:
         while True:
-            # Maintenir la connexion vivante
+            # Keep connection alive
             await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(client_id)

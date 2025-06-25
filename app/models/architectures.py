@@ -1,7 +1,7 @@
 """
-Architectures de modèles neuronal pour l'analyse de sentiment.
-Ce module contient différentes architectures (LSTM, CNN, Transformer)
-que le client peut choisir selon ses besoins.
+Neural network architectures for sentiment analysis.
+This module contains different architectures (LSTM, CNN, Transformer)
+that clients can choose according to their needs.
 """
 
 import torch
@@ -12,7 +12,7 @@ import math
 
 
 class SentimentLSTM(nn.Module):
-    """Architecture LSTM bidirectionnelle avec attention"""
+    """Bidirectional LSTM architecture with attention"""
     
     def __init__(self, vocab_size: int, embed_dim: int, hidden_dim: int, 
                  num_classes: int, num_layers: int = 2, dropout: float = 0.3):
@@ -24,10 +24,10 @@ class SentimentLSTM(nn.Module):
         self.num_classes = num_classes
         self.num_layers = num_layers
         
-        # Couche d'embedding
+        # Embedding layer
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
         
-        # LSTM bidirectionnel
+        # Bidirectional LSTM
         self.lstm = nn.LSTM(
             embed_dim, 
             hidden_dim,
@@ -37,7 +37,7 @@ class SentimentLSTM(nn.Module):
             batch_first=True
         )
         
-        # Mécanisme d'attention
+        # Attention mechanism
         self.attention = nn.MultiheadAttention(
             embed_dim=hidden_dim * 2,
             num_heads=8,
@@ -45,7 +45,7 @@ class SentimentLSTM(nn.Module):
             batch_first=True
         )
         
-        # Couches de classification
+        # Classification layers
         self.classifier = nn.Sequential(
             nn.Linear(hidden_dim * 2, hidden_dim),
             nn.ReLU(),
@@ -56,11 +56,11 @@ class SentimentLSTM(nn.Module):
             nn.Linear(hidden_dim // 2, num_classes)
         )
         
-        # Initialisation des poids
+        # Weight initialization
         self._init_weights()
     
     def _init_weights(self):
-        """Initialise les poids du modèle"""
+        """Initialize model weights"""
         for name, param in self.named_parameters():
             if 'weight' in name:
                 if 'lstm' in name:
@@ -75,11 +75,11 @@ class SentimentLSTM(nn.Module):
         Forward pass
         
         Args:
-            input_ids: Tensor de forme (batch_size, seq_len)
-            attention_mask: Masque d'attention (optionnel)
+            input_ids: Tensor of shape (batch_size, seq_len)
+            attention_mask: Attention mask (optional)
             
         Returns:
-            Logits de classification
+            Classification logits
         """
         batch_size, seq_len = input_ids.size()
         
@@ -91,7 +91,7 @@ class SentimentLSTM(nn.Module):
         
         # Self-attention
         if attention_mask is not None:
-            # Convertir le masque pour l'attention
+            # Convert mask for attention
             attention_mask = attention_mask.bool()
             attended_out, _ = self.attention(lstm_out, lstm_out, lstm_out, key_padding_mask=~attention_mask)
         else:
@@ -111,7 +111,7 @@ class SentimentLSTM(nn.Module):
 
 
 class SentimentCNN(nn.Module):
-    """Architecture CNN avec plusieurs tailles de filtres"""
+    """CNN architecture with multiple filter sizes"""
     
     def __init__(self, vocab_size: int, embed_dim: int, num_classes: int,
                  filter_sizes: list = [3, 4, 5], num_filters: int = 100, dropout: float = 0.5):
@@ -123,10 +123,10 @@ class SentimentCNN(nn.Module):
         self.filter_sizes = filter_sizes
         self.num_filters = num_filters
         
-        # Couche d'embedding
+        # Embedding layer
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
         
-        # Couches convolutionnelles
+        # Convolutional layers
         self.convs = nn.ModuleList([
             nn.Conv1d(embed_dim, num_filters, kernel_size=filter_size)
             for filter_size in filter_sizes
@@ -135,14 +135,14 @@ class SentimentCNN(nn.Module):
         # Dropout
         self.dropout = nn.Dropout(dropout)
         
-        # Couche de classification
+        # Classification layer
         self.classifier = nn.Linear(len(filter_sizes) * num_filters, num_classes)
         
-        # Initialisation des poids
+        # Weight initialization
         self._init_weights()
     
     def _init_weights(self):
-        """Initialise les poids du modèle"""
+        """Initialize model weights"""
         for module in self.modules():
             if isinstance(module, nn.Conv1d):
                 nn.init.kaiming_normal_(module.weight, mode='fan_out', nonlinearity='relu')
@@ -163,10 +163,10 @@ class SentimentCNN(nn.Module):
             pooled = F.max_pool1d(conv_out, conv_out.size(2))  # (batch_size, num_filters, 1)
             conv_outputs.append(pooled.squeeze(2))  # (batch_size, num_filters)
         
-        # Concaténation des sorties
+        # Concatenate outputs
         concat_output = torch.cat(conv_outputs, dim=1)  # (batch_size, len(filter_sizes) * num_filters)
         
-        # Dropout et classification
+        # Dropout and classification
         output = self.dropout(concat_output)
         logits = self.classifier(output)
         
@@ -174,7 +174,7 @@ class SentimentCNN(nn.Module):
 
 
 class PositionalEncoding(nn.Module):
-    """Encodage positionnel pour Transformer"""
+    """Positional encoding for Transformer"""
     
     def __init__(self, embed_dim: int, max_seq_len: int = 5000):
         super(PositionalEncoding, self).__init__()
@@ -195,7 +195,7 @@ class PositionalEncoding(nn.Module):
 
 
 class SentimentTransformer(nn.Module):
-    """Architecture Transformer pour l'analyse de sentiment"""
+    """Transformer architecture for sentiment analysis"""
     
     def __init__(self, vocab_size: int, embed_dim: int, num_classes: int,
                  num_heads: int = 8, num_layers: int = 6, 
@@ -206,11 +206,11 @@ class SentimentTransformer(nn.Module):
         self.embed_dim = embed_dim
         self.num_classes = num_classes
         
-        # Embedding et encodage positionnel
+        # Embedding and positional encoding
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
         self.pos_encoding = PositionalEncoding(embed_dim)
         
-        # Couches Transformer
+        # Transformer layers
         encoder_layer = nn.TransformerEncoderLayer(
             d_model=embed_dim,
             nhead=num_heads,
@@ -229,11 +229,11 @@ class SentimentTransformer(nn.Module):
             nn.Linear(embed_dim // 2, num_classes)
         )
         
-        # Initialisation
+        # Initialization
         self._init_weights()
     
     def _init_weights(self):
-        """Initialise les poids du modèle"""
+        """Initialize model weights"""
         for module in self.modules():
             if isinstance(module, nn.Linear):
                 nn.init.xavier_uniform_(module.weight)
@@ -248,9 +248,9 @@ class SentimentTransformer(nn.Module):
         embedded = self.embedding(input_ids) * math.sqrt(self.embed_dim)
         embedded = self.pos_encoding(embedded.transpose(0, 1)).transpose(0, 1)
         
-        # Créer le masque d'attention pour le padding
+        # Create attention mask for padding
         if attention_mask is not None:
-            # Inverser le masque pour PyTorch (True = ignore)
+            # Invert mask for PyTorch (True = ignore)
             src_key_padding_mask = ~attention_mask.bool()
         else:
             src_key_padding_mask = None
@@ -261,7 +261,7 @@ class SentimentTransformer(nn.Module):
             src_key_padding_mask=src_key_padding_mask
         )
         
-        # Global average pooling avec masque
+        # Global average pooling with mask
         if attention_mask is not None:
             mask = attention_mask.unsqueeze(-1).float()
             pooled = (transformer_out * mask).sum(dim=1) / mask.sum(dim=1)
@@ -275,7 +275,7 @@ class SentimentTransformer(nn.Module):
 
 
 class HybridModel(nn.Module):
-    """Architecture hybride combinant CNN et LSTM"""
+    """Hybrid architecture combining CNN and LSTM"""
     
     def __init__(self, vocab_size: int, embed_dim: int, num_classes: int,
                  hidden_dim: int = 256, dropout: float = 0.3):
@@ -283,14 +283,14 @@ class HybridModel(nn.Module):
         
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
         
-        # Branche CNN
+        # CNN branch
         self.conv1 = nn.Conv1d(embed_dim, 128, kernel_size=3, padding=1)
         self.conv2 = nn.Conv1d(128, 128, kernel_size=3, padding=1)
         
-        # Branche LSTM
+        # LSTM branch
         self.lstm = nn.LSTM(embed_dim, hidden_dim//2, bidirectional=True, batch_first=True)
         
-        # Fusion et classification
+        # Fusion and classification
         self.fusion = nn.Linear(128 + hidden_dim, hidden_dim)
         self.classifier = nn.Sequential(
             nn.ReLU(),
@@ -302,13 +302,13 @@ class HybridModel(nn.Module):
         # Embedding
         embedded = self.embedding(input_ids)
         
-        # Branche CNN
+        # CNN branch
         cnn_input = embedded.transpose(1, 2)  # (batch, embed_dim, seq_len)
         cnn_out = F.relu(self.conv1(cnn_input))
         cnn_out = F.relu(self.conv2(cnn_out))
         cnn_pooled = F.max_pool1d(cnn_out, cnn_out.size(2)).squeeze(2)
         
-        # Branche LSTM
+        # LSTM branch
         lstm_out, _ = self.lstm(embedded)
         if attention_mask is not None:
             mask = attention_mask.unsqueeze(-1).float()
@@ -328,17 +328,17 @@ class HybridModel(nn.Module):
 def get_model_architecture(architecture: str, vocab_size: int, embed_dim: int, 
                           num_classes: int, **kwargs) -> nn.Module:
     """
-    Factory function pour créer une architecture de modèle
+    Factory function to create model architecture
     
     Args:
-        architecture: Type d'architecture ('lstm', 'cnn', 'transformer', 'hybrid')
-        vocab_size: Taille du vocabulaire
-        embed_dim: Dimension des embeddings
-        num_classes: Nombre de classes de sentiment
-        **kwargs: Arguments supplémentaires spécifiques à l'architecture
+        architecture: Architecture type ('lstm', 'cnn', 'transformer', 'hybrid')
+        vocab_size: Vocabulary size
+        embed_dim: Embedding dimension
+        num_classes: Number of sentiment classes
+        **kwargs: Additional architecture-specific arguments
         
     Returns:
-        Instance du modèle
+        Model instance
     """
     
     if architecture.lower() == 'lstm':
@@ -382,18 +382,18 @@ def get_model_architecture(architecture: str, vocab_size: int, embed_dim: int,
         )
     
     else:
-        raise ValueError(f"Architecture non supportée: {architecture}")
+        raise ValueError(f"Unsupported architecture: {architecture}")
 
 
 def count_parameters(model: nn.Module) -> Dict[str, int]:
     """
-    Compte le nombre de paramètres dans un modèle
+    Counts parameters in a model
     
     Args:
-        model: Modèle PyTorch
+        model: PyTorch model
         
     Returns:
-        Dictionnaire avec le nombre de paramètres
+        Dictionary with parameter counts
     """
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)

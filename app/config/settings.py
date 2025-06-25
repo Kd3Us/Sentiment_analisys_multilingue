@@ -1,6 +1,6 @@
 """
-Configuration settings pour la plateforme d'analyse de sentiment.
-Ce fichier centralise tous les paramètres configurables.
+Configuration settings for the sentiment analysis platform.
+This file centralizes all configurable parameters.
 """
 
 from pydantic_settings import BaseSettings
@@ -9,7 +9,7 @@ import os
 
 
 class Settings(BaseSettings):
-    """Configuration principale de l'application"""
+    """Main application configuration"""
     
     # API Configuration
     API_V1_STR: str = "/api/v1"
@@ -73,9 +73,9 @@ class Settings(BaseSettings):
 
 
 class ModelConfig:
-    """Configuration spécifique aux modèles"""
+    """Model-specific configuration"""
     
-    # Architecture par défaut
+    # Default architecture settings
     LSTM_CONFIG = {
         "hidden_dim": 256,
         "num_layers": 2,
@@ -96,7 +96,7 @@ class ModelConfig:
         "dropout": 0.1
     }
     
-    # Optimiseur
+    # Optimizer configuration
     OPTIMIZER_CONFIG = {
         "lr": 0.001,
         "weight_decay": 1e-5,
@@ -104,16 +104,16 @@ class ModelConfig:
     }
 
 
-# Instance globale des settings
+# Global settings instances
 settings = Settings()
 model_config = ModelConfig()
 
 
 def get_settings() -> Settings:
-    """Retourne l'instance des settings"""
+    """Returns settings instance"""
     return settings
 
 
 def get_model_config() -> ModelConfig:
-    """Retourne la configuration des modèles"""
+    """Returns model configuration"""
     return model_config

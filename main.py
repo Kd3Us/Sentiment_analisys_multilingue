@@ -1,6 +1,6 @@
 """
-Point d'entrée principal de l'application Sentiment AI Platform.
-Lance le serveur FastAPI avec toutes les configurations nécessaires.
+Sentiment AI Platform - Main application entry point.
+Professional sentiment analysis platform with customizable neural models.
 """
 
 import uvicorn
@@ -15,7 +15,7 @@ from loguru import logger
 import sys
 from pathlib import Path
 
-# Configuration des logs
+# Configure logging for production
 logger.remove()
 logger.add(
     sys.stderr,
@@ -35,96 +35,95 @@ from app.api.routes import router
 from app.api.models import ErrorResponse
 
 
-# Gestionnaire de cycle de vie de l'application
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Gestionnaire du cycle de vie de l'application"""
+    """Application lifecycle manager"""
     
     # Startup
-    logger.info("🚀 Démarrage de Sentiment AI Platform")
+    logger.info("Starting Sentiment AI Platform")
     
-    # Créer les dossiers nécessaires
+    # Create required directories
     Path(settings.MODELS_PATH).mkdir(parents=True, exist_ok=True)
     Path(settings.DATA_PATH).mkdir(parents=True, exist_ok=True)
     Path(settings.LOGS_PATH).mkdir(parents=True, exist_ok=True)
     
-    # Vérifier les dépendances
+    # Verify dependencies
     try:
         import torch
-        logger.info(f"✓ PyTorch {torch.__version__} - CUDA: {torch.cuda.is_available()}")
+        logger.info(f"PyTorch {torch.__version__} - CUDA: {torch.cuda.is_available()}")
         
         import nltk
-        logger.info("✓ NLTK disponible")
+        logger.info("NLTK available")
         
         import spacy
-        logger.info("✓ spaCy disponible")
+        logger.info("spaCy available")
         
         from langdetect import detect
-        logger.info("✓ Détection de langue disponible")
+        logger.info("Language detection available")
         
     except ImportError as e:
-        logger.error(f"❌ Dépendance manquante: {e}")
+        logger.error(f"Missing dependency: {e}")
         raise
     
-    logger.info("✅ Toutes les dépendances sont prêtes")
+    logger.info("All dependencies ready")
     
     yield
     
     # Shutdown
-    logger.info("🛑 Arrêt de Sentiment AI Platform")
+    logger.info("Shutting down Sentiment AI Platform")
 
 
-# Créer l'application FastAPI
+# Create FastAPI application
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
     description="""
     # Sentiment AI Platform
     
-    Plateforme d'analyse de sentiment multilingue avec modèles personnalisables.
+    Professional multilingual sentiment analysis platform with customizable neural models.
     
-    ## Fonctionnalités principales
+    ## Key Features
     
-    * 🧠 **Modèles from scratch** - Architectures LSTM, CNN, Transformer, Hybride
-    * 🌍 **Multilingue** - Support automatique de multiples langues
-    * 📊 **5 nuances** - Classification fine du sentiment
-    * 🎯 **Personnalisable** - Chaque client entraîne son propre modèle
-    * ⚡ **Temps réel** - Suivi de l'entraînement via WebSocket
-    * 🔄 **API REST** - Interface simple et complète
+    * **Custom Neural Models** - LSTM, CNN, Transformer, Hybrid architectures
+    * **Multilingual Support** - Automatic language detection and preprocessing
+    * **Fine-grained Analysis** - 5-level sentiment classification
+    * **Client-specific Training** - Each client trains their own model
+    * **Real-time Monitoring** - Training progress via WebSocket
+    * **Complete REST API** - Simple and powerful interface
     
-    ## Workflow typique
+    ## Typical Workflow
     
-    1. **Upload** des données d'entraînement annotées
-    2. **Configuration** du modèle (architecture, hyperparamètres)
-    3. **Entraînement** avec suivi temps réel
-    4. **Prédiction** sur nouveaux textes
-    5. **Monitoring** des performances
+    1. **Data Upload** - Annotated training data
+    2. **Model Configuration** - Architecture and hyperparameters
+    3. **Training** - Real-time progress monitoring
+    4. **Prediction** - Inference on new texts
+    5. **Performance Monitoring** - Metrics and analytics
     
-    ## Architectures disponibles
+    ## Available Architectures
     
-    * **LSTM** - Réseaux récurrents bidirectionnels avec attention
-    * **CNN** - Convolutions 1D avec multiple kernel sizes
-    * **Transformer** - Architecture d'attention pure
-    * **Hybrid** - Combinaison CNN + LSTM
+    * **LSTM** - Bidirectional recurrent networks with attention
+    * **CNN** - 1D convolutions with multiple kernel sizes
+    * **Transformer** - Pure attention architecture
+    * **Hybrid** - Combined CNN + LSTM approach
     """,
     docs_url="/docs",
     redoc_url="/redoc",
     lifespan=lifespan
 )
 
-# Middleware CORS
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # À configurer selon vos besoins
+    allow_origins=["*"],  # Configure according to your needs
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Middleware de compression
+# Compression middleware
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# Middleware de logging des requêtes
+# Request logging middleware
 @app.middleware("http")
 async def log_requests(request, call_next):
     start_time = time.time()
@@ -140,7 +139,7 @@ async def log_requests(request, call_next):
     
     return response
 
-# Gestionnaire d'erreurs global
+# Global exception handlers
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
     return JSONResponse(
@@ -154,40 +153,40 @@ async def http_exception_handler(request, exc):
 
 @app.exception_handler(Exception)
 async def general_exception_handler(request, exc):
-    logger.error(f"Erreur non gérée: {str(exc)}")
+    logger.error(f"Unhandled error: {str(exc)}")
     return JSONResponse(
         status_code=500,
         content=ErrorResponse(
             error="INTERNAL_SERVER_ERROR", 
-            message="Une erreur interne s'est produite",
+            message="An internal error occurred",
             timestamp=datetime.now().isoformat(),
         ).dict()
     )
 
-# Inclure les routes
+# Include routes
 app.include_router(router, tags=["Sentiment Analysis"])
 
-# Routes de base
+# Base routes
 @app.get("/", tags=["Root"])
 async def root():
-    """Page d'accueil de l'API"""
+    """API home page"""
     return {
-        "message": "Bienvenue sur Sentiment AI Platform! 🚀",
+        "message": "Welcome to Sentiment AI Platform",
         "version": settings.VERSION,
         "docs": "/docs",
         "status": "running",
         "features": [
-            "Modèles from scratch",
-            "Support multilingue", 
-            "5 niveaux de sentiment",
-            "Entraînement personnalisé",
-            "API REST complète"
+            "Custom neural models",
+            "Multilingual support", 
+            "5-level sentiment analysis",
+            "Personalized training",
+            "Complete REST API"
         ]
     }
 
 @app.get("/info", tags=["Info"])
 async def get_info():
-    """Informations détaillées sur la plateforme"""
+    """Detailed platform information"""
     import torch
     
     return {
@@ -215,15 +214,15 @@ async def get_info():
     }
 
 
-# Point d'entrée pour le développement
+# Development entry point
 if __name__ == "__main__":
-    logger.info(f"🎯 Lancement du serveur sur {settings.HOST}:{settings.PORT}")
+    logger.info(f"Starting server on {settings.HOST}:{settings.PORT}")
     
     uvicorn.run(
         "main:app",
         host=settings.HOST,
         port=settings.PORT,
         reload=settings.DEBUG,
-        workers=1,  # Important pour le stockage en mémoire
+        workers=1,  # Important for in-memory storage
         log_level="info"
     )
