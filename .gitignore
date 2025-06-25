@@ -32,10 +32,6 @@ MANIFEST
 *.manifest
 *.spec
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -192,3 +188,90 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# ===========================================
+# CUSTOM ADDITIONS FOR SENTIMENT AI PLATFORM
+# ===========================================
+
+# Application logs
+logs/*.log
+logs/*.txt
+logs/*.out
+
+# Training data and temporary files
+data/temp/
+data/uploads/
+data/cache/
+data/*.csv
+data/*.json
+data/*.xlsx
+data/*.pickle
+data/*.pkl
+
+# Trained models (too large for Git)
+models/*/
+models/*.pt
+models/*.pth
+models/*.pkl
+models/*.joblib
+models/*.h5
+
+# ML caches and temp files
+.pytorch_cache/
+.transformers_cache/
+.huggingface/
+.cache/
+
+# Uploaded files
+uploads/
+temp/
+tmp/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment files with secrets
+.env.local
+.env.production
+.env.staging
+
+# IDE and editor files
+.vscode/settings.json
+.vscode/launch.json
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Test files
+test_output/
+test_results/
+*.test
+
+# Documentation builds
+docs/_build/
+docs/build/
+
+# Monitoring and profiling
+*.prof
+*.profile
+
+# Keep directory structure but ignore contents
+!logs/.gitkeep
+!data/.gitkeep
+!models/.gitkeep
